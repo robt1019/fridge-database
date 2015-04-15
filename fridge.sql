@@ -1,11 +1,13 @@
-pragma foreign_keys=ON;
-
+pragma foreign_keys=ON; 
 CREATE TABLE IF NOT EXISTS products(
-    ID INT PRIMARY KEY NOT NULL,
+    ID INTEGER PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
     manufacturer TEXT NOT NULL,
     weight REAL
 );
+
+CREATE UNIQUE INDEX unique_product
+on products (name, manufacturer, weight);
 
 CREATE TABLE IF NOT EXISTS fridge_contents(
     item_id INT PRIMARY KEY NOT NULL,      

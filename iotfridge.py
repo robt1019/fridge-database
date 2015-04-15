@@ -42,7 +42,7 @@ class IoTFridge:
         print >> self.outfile, json.dumps(resp)
 
     # new code. Beware!
-    def req_insert_door_top(self, reqj);
+    def req_insert_door_top(self, reqj):
         data = (reqj['id'], reqj['data']['name'], reqj['data']['manufacturer'], reqj['data']['weight'])
         self.cur.execut("INSERT INTO fridge_contents VALUES(?, ?, ?, ?)", data)
 
