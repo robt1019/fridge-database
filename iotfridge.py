@@ -26,25 +26,26 @@ class IoTFridge:
 
     # Begin API requests
 
-    # reqj refers to json document
-    def req_list(self, reqj):
+    # reqjson refers to json document
+    def req_list(self, reqjson):
         resp = { 'response': [], 'success': True }
         for row in self.cur.execute("SELECT name FROM products"):
             # Each row only contains one thing right now, name...
             resp['response'].append({'name': row[0] })
         print >> self.outfile, json.dumps(resp, indent = 1)
 
-    def req_insert(self, reqj):
-        data = (reqj['id'], reqj['data']['name'], reqj['data']['manufacturer'], reqj['data']['weight'])
+    # need to work out how to add null values as default to database record...
+    def req_addProduct(self, reqjson):
+        data = (reqjson['id'], reqjson['data']['name'], reqjson['data']['manufacturer'], reqjson['data']['weight'])
         self.cur.execute("INSERT INTO products VALUES (?, ?, ?, ?)", data)
         self.db.commit()
         resp = {'response': 'OK', 'success': True}
         print >> self.outfile, json.dumps(resp)
 
-    # new code. Beware!
-    def req_insert_door_top(self, reqj):
-        data = (reqj['id'], reqj['data']['name'], reqj['data']['manufacturer'], reqj['data']['weight'])
-        self.cur.execut("INSERT INTO fridge_contents VALUES(?, ?, ?, ?)", data)
+#    # insert item into fridge
+#    def req_insertItem(self, reqjson):
+#        data = (reqjson['id'], reqjson['data']['use']
+#        self.cur.execut("INSERT INTO fridge_contents VALUES(?, ?, ?, ?)", data)
 
 
     # End API requests

@@ -26,19 +26,25 @@ class IoTFridge:
 
     # Begin API requests
 
+    # reqj refers to json document
     def req_list(self, reqj):
         resp = { 'response': [], 'success': True }
-        for row in self.cur.execute("SELECT itemName FROM items"):
+        for row in self.cur.execute("SELECT name FROM products"):
             # Each row only contains one thing right now, name...
             resp['response'].append({'name': row[0] })
         print >> self.outfile, json.dumps(resp, indent = 1)
 
     def req_insert(self, reqj):
-        data = (reqj['id'], reqj['data']['name'])
-        self.cur.execute("INSERT INTO items VALUES (?, ?)", data)
+        data = (reqj['id'], reqj['data']['name'], reqj['data']['manufacturer'], reqj['data']['weight'])
+        self.cur.execute("INSERT INTO products VALUES (?, ?, ?, ?)", data)
         self.db.commit()
         resp = {'response': 'OK', 'success': True}
         print >> self.outfile, json.dumps(resp)
+
+    # new code. Beware!
+    def req_insert_door_top(self, reqj):
+        data = (reqj['id'], reqj['data']['name'], reqj['data']['manufacturer'], reqj['data']['weight'])
+        self.cur.execut("INSERT INTO fridge_contents VALUES(?, ?, ?, ?)", data)
 
 
     # End API requests
@@ -75,9 +81,14 @@ class IoTFridge:
         lines = []
         while True:
             line = self.infile.readline()
+            #if first line blank
             if line == '': break
+            #remove whitespace
             lines.append(line.strip())
+            #if more than one line and last line in lines list blank
             if len(lines) > 1 and lines[-1] == '':
+                #process json lines
+                print(''.join(lines))
                 self.processRequest( ''.join(lines) )
                 lines = []
 
