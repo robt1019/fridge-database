@@ -1,10 +1,10 @@
 pragma foreign_keys=ON; 
 
 CREATE TABLE IF NOT EXISTS products(
-    ID INTEGER PRIMARY KEY NOT NULL,
+    id INTEGER PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
     manufacturer TEXT,
-    measurement_type TEXT,
+    measurement_type TEXT NOT NULL,
     CHECK (measurement_type IN ("quantity", "weight", "volume"))
 );
 

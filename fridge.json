@@ -1,10 +1,10 @@
-{"request": "addProduct", "id": 125, "data": {"name": "eggs", "manufacturer": "Chikinz", "weight": "200" } }
+{"request": "addProduct", "id": 125, "data": {"name": "eggs", "manufacturer": "Chikinz", "weight": "200", "measurement_type": "quantity" } }
 
-{"request": "addProduct", "id": 126, "data": {"name": "milk", "manufacturer": "Cowzz", "weight": "200" } }
+{"request": "addProduct", "id": 126, "data": {"name": "milk", "manufacturer": "Cowzz", "weight": "200", "measurement_type": "volume" } }
 
 {"request": "list"}
 
-{"request": "addProduct", "id": 127, "data": {"name": "cheese", "manufacturer": "Cowzz", "weight": "300" } }
+{"request": "addProduct", "id": 127, "data": {"name": "cheese", "manufacturer": "Cowzz", "weight": "300", "measurement_type": "weight" } }
 
-{"request": "insertProduct", "id": 127, "data": {"useBy": "2015-04-19"} }
+{"request": "insertProduct", "id": 127, "data": {"useBy": "2015-04-19", "weight": "300"} }
 

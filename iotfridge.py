@@ -36,16 +36,29 @@ class IoTFridge:
 
     # need to work out how to add null values as default to database record...
     def req_addProduct(self, reqjson):
-        data = (reqjson['id'], reqjson['data']['name'], reqjson['data']['manufacturer'], reqjson['data']['weight'])
+
+        data = (reqjson['id'], reqjson['data']['name'], reqjson['data']['manufacturer'], reqjson['data']['measurement_type'])
+
         self.cur.execute("INSERT INTO products VALUES (?, ?, ?, ?)", data)
         self.db.commit()
         resp = {'response': 'OK', 'success': True}
         print >> self.outfile, json.dumps(resp)
 
-#    # insert item into fridge
-#    def req_insertItem(self, reqjson):
-#        data = (reqjson['id'], reqjson['data']['use']
-#        self.cur.execut("INSERT INTO fridge_contents VALUES(?, ?, ?, ?)", data)
+   # insert item into fridge contents table
+    def req_insertProduct(self, reqjson):
+        product_id = reqjson['id']
+        self.cur.execute("SELECT measurement_type FROM products WHERE ID=?", (product_id,))
+        data_type = json.dumps(self.cur.fetchone())
+        # print(data_type)
+        # if product to be inserted is measured by weight
+        if data_type == '["weight"]':
+            print("weight found")
+            # need to work out how to deal with ids and inserting specific 
+            # values, leaving others set to null. Use dictionary to achieve this
+            data = (reqjson['id'], reqjson['data']['weight'],)
+        # data_type = reqjson['data']['measurement_type'];
+        # data = (reqjson['id'], reqjson['data']['useBy'], reqjson['data']['measurement_type']
+        # self.cur.execute("INSERT INTO fridge_contents VALUES(?, ?, ?, ?)", data)
 
 
     # End API requests
