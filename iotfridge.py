@@ -34,31 +34,38 @@ class IoTFridge:
             resp['response'].append({'name': row[0] })
         print >> self.outfile, json.dumps(resp, indent = 1)
 
-    # need to work out how to add null values as default to database record...
+    # insert new item into products table. Name must be unique(for practical purposes for consumers)
+    # id is automatically generated from row_id 
     def req_addProduct(self, reqjson):
 
-        data = (reqjson['id'], reqjson['data']['name'], reqjson['data']['manufacturer'], reqjson['data']['measurement_type'])
+        data = (reqjson['data']['name'], reqjson['data']['manufacturer'], reqjson['data']['measurement_type'])
 
-        self.cur.execute("INSERT INTO products VALUES (?, ?, ?, ?)", data)
+        self.cur.execute("INSERT INTO products(name, manufacturer, measurement_type) VALUES(?, ?, ?)", data)
         self.db.commit()
         resp = {'response': 'OK', 'success': True}
         print >> self.outfile, json.dumps(resp)
 
    # insert item into fridge contents table
     def req_insertProduct(self, reqjson):
-        product_id = reqjson['id']
-        self.cur.execute("SELECT measurement_type FROM products WHERE ID=?", (product_id,))
-        data_type = json.dumps(self.cur.fetchone())
-        # print(data_type)
-        # if product to be inserted is measured by weight
-        if data_type == '["weight"]':
-            print("weight found")
-            # need to work out how to deal with ids and inserting specific 
-            # values, leaving others set to null. Use dictionary to achieve this
-            data = (reqjson['id'], reqjson['data']['weight'],)
-        # data_type = reqjson['data']['measurement_type'];
-        # data = (reqjson['id'], reqjson['data']['useBy'], reqjson['data']['measurement_type']
-        # self.cur.execute("INSERT INTO fridge_contents VALUES(?, ?, ?, ?)", data)
+
+        product_name = reqjson['name']
+        
+        # get product id from products table by looking up unique product name
+        self.cur.execute("SELECT id FROM products WHERE name=?", (product_name,))
+        product_id = json.dumps(self.cur.fetchone())
+
+        # get product measurement type from products table by name (quantity, volume or weight)
+        self.cur.execute("SELECT measurement_type FROM products WHERE name=?", (product_name,))
+        measurement_type = json.dumps(self.cur.fetchone()).strip('"[]')
+        print(measurement_type)
+
+        # enter measurement quantity into relevant measurement field in table, irrelevant values are set to NULL by default
+        data = (product_id, reqjson['data'][measurement_type], reqjson['data']['useBy'])
+        self.cur.execute("INSERT INTO fridge_contents(product_id, " + measurement_type + ", expiration_date) VALUES(?, ?, ?)", data)
+
+        self.db.commit()
+        resp = {'response': 'OK', 'success': True}
+        print >> self.outfile, json.dumps(resp)
 
 
     # End API requests
