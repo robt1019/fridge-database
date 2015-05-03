@@ -1,14 +1,42 @@
-{"request": "addProduct", "data": {"name": "eggs", "manufacturer": "Chikinz", "weight": "200", "measurement_type": "quantity" } }
+{"request": "addProduct", "name": "eggs", "brand": "Lovely Eggs", "data": {"measurement_type": "quantity", "use_within": null} }
 
-{"request": "addProduct", "data": {"name": "milk", "manufacturer": "Cowzz", "weight": "200", "measurement_type": "volume" } }
+{"request": "addProduct", "name": "milk", "brand": "Cows", "data": {"measurement_type": "volume", "use_within": 7} }
 
-{"request": "list"}
+{"request": "addProduct", "name": "ketchup", "brand": "Beinz", "data": {"measurement_type": "volume", "use_within": 30} }
 
-{"request": "addProduct", "data": {"name": "cheese", "manufacturer": "Cowzz", "weight": "300", "measurement_type": "weight" } }
+{"request": "addProduct", "name": "cheddar", "brand": "Mouse's Delight", "data": {"measurement_type": "weight", "use_within": 14} }
 
-{"request": "insertProduct", "name": "eggs", "data": {"useBy": "2015-04-19", "quantity": "6"} }
+{"request": "addProduct", "name": "cheddar", "brand": "Krazy Cheddar", "data": {"measurement_type": "weight", "use_within": 9} }
 
-{"request": "insertProduct", "name": "milk", "data": {"useBy": "2015-04-30", "volume": "1000"} }
+{"request": "listProducts"}
 
-{"request": "insertProduct", "name": "milk", "data": {"useBy": "2015-04-31", "volume": "1000"} }
+{"request": "insertItem", "name": "eggs", "brand": "Lovely Eggs", "data": {"use_by": "2015-04-19", "quantity": "6"} }
+
+{"request": "insertItem", "name": "milk", "brand": "Cows", "data": {"use_by": "2015-05-30", "volume": "1000"} }
+
+{"request": "insertItem", "name": "milk", "brand": "Cows", "data": {"use_by": "2015-05-01", "volume": "1000"} }
+
+{"request": "listContents"}
+
+{"request": "openItem", "item_id": 3}
+
+{"request": "listContents"}
+
+{"request": "removeItem", "item_id": 2}
+
+{"request": "listContents"}
+
+{"request": "checkDates"}
+
+{"request": "addFavourite", "product_id": 1}
+
+{"request": "addFavourite", "product_id": 2}
+
+{"request": "listFavourites"}
+
+{"request": "removeFavourite", "product_id": 2}
+
+{"request": "listFavourites"}
+
+{"request": "removeProduct", "name": "milk", "brand": "Cows"}
 
